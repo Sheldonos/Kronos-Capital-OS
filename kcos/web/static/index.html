@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kronos Capital OS</title>
+  <link rel="stylesheet" href="/static/app.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="orb"></span><div><strong>KRONOS</strong><small>CAPITAL OS</small></div></div>
+      <nav>
+        <button data-view="overview" class="active">Overview</button>
+        <button data-view="setup">Setup</button>
+        <button data-view="capabilities">Capabilities</button>
+        <button data-view="strategies">Strategies</button>
+        <button data-view="research">Research</button>
+        <button data-view="audit">Audit</button>
+      </nav>
+      <div class="sidebar-footer"><span id="heartbeatDot" class="dot"></span><span id="heartbeatText">Checking runtime…</span></div>
+    </aside>
+    <main>
+      <header><div><p class="eyebrow">AUTONOMOUS QUANTITATIVE INSTITUTION</p><h1 id="viewTitle">Overview</h1></div><div class="actions"><button id="refreshBtn" class="ghost">Refresh</button><button id="stopBtn" class="danger">Emergency stop</button></div></header>
+
+      <section id="view-overview" class="view active">
+        <div class="grid metrics">
+          <article><span>Runtime</span><strong id="runtimeStatus">—</strong><small id="cycleLatency">—</small></article>
+          <article><span>World version</span><strong id="worldVersion">—</strong><small>persisted decision state</small></article>
+          <article><span>Live trading</span><strong id="liveTrading">—</strong><small>fixed evidence gates apply</small></article>
+          <article><span>Decision SLA</span><strong>≤ 6s</strong><small>new risk blocked on stale state</small></article>
+        </div>
+        <div class="grid two">
+          <article class="panel"><div class="panel-head"><h2>System health</h2><span id="healthBadge" class="badge">—</span></div><div id="healthList" class="list"></div></article>
+          <article class="panel"><div class="panel-head"><h2>Connectors</h2><span class="badge muted">live state</span></div><div id="connectorList" class="list"></div></article>
+        </div>
+        <article class="panel"><div class="panel-head"><h2>Genesis supervisor</h2><span id="genesisBadge" class="badge">—</span></div><div id="repairPlan" class="list"></div></article>
+      </section>
+
+      <section id="view-setup" class="view">
+        <div class="callout"><strong>One-time setup.</strong> Connect only the systems you have. Secrets are encrypted locally and never returned to the browser after saving. The runtime reconciles new desired state automatically.</div>
+        <form id="setupForm">
+          <article class="panel"><h2>Owner & autonomy</h2><div class="form-grid">
+            <label>Jurisdiction<input name="jurisdiction" value="US" /></label>
+            <label>Base currency<input name="base_currency" value="USD" /></label>
+            <label>Starting deployable capital<input name="initial_capital" type="number" value="1000" min="0" step="0.01" /></label>
+            <label class="toggle"><input name="live_trading" type="checkbox" /><span>Allow live trading after strategy gates</span></label>
+            <label class="toggle"><input name="auto_graduate" type="checkbox" /><span>Auto-graduate PAPER → CANARY → LIVE</span></label>
+          </div></article>
+          <article class="panel"><h2>Hard risk constitution</h2><div class="form-grid">
+            <label>Risk / trade %<input name="max_risk_per_trade_pct" type="number" value="0.50" step="0.05" min="0.01" /></label>
+            <label>Aggregate open risk %<input name="max_aggregate_open_risk_pct" type="number" value="2.00" step="0.10" /></label>
+            <label>Daily loss breaker %<input name="max_daily_loss_pct" type="number" value="1.00" step="0.10" /></label>
+            <label>Weekly loss breaker %<input name="max_weekly_loss_pct" type="number" value="3.00" step="0.10" /></label>
+            <label>Hard drawdown stop %<input name="hard_drawdown_stop_pct" type="number" value="10.00" step="0.50" /></label>
+            <label>Gross leverage ceiling<input name="max_gross_leverage" type="number" value="1.00" step="0.10" /></label>
+          </div></article>
+          <div id="connectorForms"></div>
+          <article class="panel"><div class="panel-head"><h2>Activate</h2><span class="badge muted">desired state + encrypted secrets</span></div><p class="muted-text">KCOS will re-read this configuration and reconcile connectors without changing its immutable safety rules.</p><button class="primary" type="submit">Save setup & activate</button><span id="saveResult"></span></article>
+        </form>
+      </section>
+
+      <section id="view-capabilities" class="view"><article class="panel"><div class="panel-head"><h2>Capability truth table</h2><span class="badge muted">Satisfied · Partial · External dependency · Not covered</span></div><div id="capabilityList" class="capabilities"></div></article></section>
+      <section id="view-strategies" class="view"><article class="panel"><div class="panel-head"><h2>Strategy marketplace</h2><span class="badge muted">research → scaled</span></div><div id="strategyList" class="table-wrap"></div></article></section>
+      <section id="view-research" class="view"><article class="panel"><div class="panel-head"><h2>Research & institutional memory</h2><span class="badge muted">falsifiable evidence</span></div><div id="researchList" class="list"></div></article></section>
+      <section id="view-audit" class="view"><article class="panel"><div class="panel-head"><h2>Evidence ledger</h2><span class="badge muted">latest 100 events</span></div><div id="auditList" class="audit"></div></article></section>
+    </main>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

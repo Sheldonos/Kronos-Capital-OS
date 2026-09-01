@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kronos-capital-os"
+version = "1.1.0"
+description = "Autonomous context-aware cross-asset quantitative operating system around Kronos"
+requires-python = ">=3.10"
+dependencies = [
+  "pydantic>=2.7",
+  "pydantic-settings>=2.2",
+  "PyYAML>=6.0",
+  "httpx>=0.27",
+  "redis>=5.0",
+  "psycopg[binary]>=3.1",
+  "fastapi>=0.111",
+  "uvicorn[standard]>=0.30",
+  "numpy>=1.26",
+  "pandas>=2.2",
+  "scipy>=1.13",
+  "networkx>=3.3",
+  "prometheus-client>=0.20",
+  "tenacity>=8.3",
+  "cryptography>=42",
+]
+
+[project.optional-dependencies]
+marketdata = ["databento>=0.45"]
+coinbase = ["coinbase-advanced-py>=1.8"]
+dev = ["pytest>=8.2", "ruff>=0.5"]
+
+[project.scripts]
+kcos = "kcos.main:main"
+kcos-genesis = "kcos.genesis:main"
+
+[tool.setuptools.packages.find]
+include = ["kcos*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.setuptools.package-data]
+"kcos.web" = ["static/*"]

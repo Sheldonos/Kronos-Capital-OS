@@ -1,0 +1,23 @@
+states: [RESEARCH, WALK_FORWARD, PAPER, CANARY, LIVE, SCALED, RETIRED]
+minimums:
+  WALK_FORWARD:
+    min_oos_observations: 100
+    max_data_leakage_flags: 0
+  PAPER:
+    min_positive_oos_windows: 3
+    require_cost_model: true
+    require_parameter_perturbation: true
+  CANARY:
+    min_paper_trades: 50
+    min_paper_days: 14
+    max_paper_drawdown_pct: 8
+  LIVE:
+    min_canary_trades: 30
+    max_canary_drawdown_pct: 5
+  SCALED:
+    min_live_trades: 100
+    require_positive_net_expectancy: true
+demotion:
+  risk_breach: RETIRED
+  statistically_significant_decay: PAPER
+  data_quality_failure: RESEARCH

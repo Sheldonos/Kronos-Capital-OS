@@ -1,0 +1,71 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: kcos
+      POSTGRES_PASSWORD: kcos
+      POSTGRES_DB: kcos
+    volumes:
+      - kcos_postgres:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/00-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kcos"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - kcos_redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  runtime:
+    build: .
+    restart: unless-stopped
+    environment:
+      ENVIRONMENT: production
+      DATABASE_URL: postgresql://kcos:kcos@postgres:5432/kcos
+      REDIS_URL: redis://redis:6379/0
+      KCOS_RUNTIME_DIR: /app/runtime
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - kcos_models:/root/.cache/huggingface
+      - kcos_artifacts:/app/artifacts
+      - kcos_runtime:/app/runtime
+    command: ["python", "-m", "kcos.main", "runtime"]
+
+  research:
+    build: .
+    restart: unless-stopped
+    environment:
+      ENVIRONMENT: production
+      DATABASE_URL: postgresql://kcos:kcos@postgres:5432/kcos
+      REDIS_URL: redis://redis:6379/0
+      KCOS_RUNTIME_DIR: /app/runtime
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    volumes:
+      - kcos_models:/root/.cache/huggingface
+      - kcos_artifacts:/app/artifacts
+      - kcos_runtime:/app/runtime
+    command: ["python", "-m", "kcos.main", "research"]
+
+volumes:
+  kcos_postgres:
+  kcos_redis:
+  kcos_models:
+  kcos_artifacts:
+  kcos_runtime:

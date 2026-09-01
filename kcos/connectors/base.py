@@ -1,0 +1,13 @@
+from abc import ABC,abstractmethod
+class Connector(ABC):
+    name='connector'
+    @abstractmethod
+    async def health(self):...
+class ExecutionVenue(Connector):
+    @abstractmethod
+    async def account_state(self):...
+    @abstractmethod
+    async def place_order(self,intent,approved_qty):...
+class MarketDataConnector(Connector):
+    @abstractmethod
+    async def run(self,on_event):...

@@ -1,0 +1,18 @@
+# KCOS can expand/rewrite its discovered universe at runtime, but live execution still requires
+# venue/account permissions and instrument resolution.
+instruments:
+  - symbol: SPY
+    asset_class: ETF
+    market_data: DATABENTO
+    execution: IBKR
+    enabled: false
+  - symbol: BTC-USD
+    asset_class: CRYPTO
+    market_data: DATABENTO
+    execution: COINBASE
+    enabled: false
+  - symbol: EUR_USD
+    asset_class: FX
+    market_data: OANDA
+    execution: OANDA
+    enabled: false
